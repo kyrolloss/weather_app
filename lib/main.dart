@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/cubits/app_cubit.dart';
 
+import 'Helpers/Dio Helper/Dio Helper.dart';
 import 'Screens/mainLayout.dart';
 
-void main() {
+void main() async{
+  await DioHelper.init();
+
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/components/Text.dart';
+
+import '../../cubits/app_cubit.dart';
 
 class FutureScreen extends StatelessWidget {
   const FutureScreen({super.key});
@@ -9,6 +12,12 @@ class FutureScreen extends StatelessWidget {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
+    return BlocConsumer<AppCubit, AppState>(
+  listener: (context, state) {
+    // TODO: implement listener
+  },
+  builder: (context, state) {
+    var cubit = AppCubit.get(context);
     return Scaffold(
         body: Container(
       decoration: BoxDecoration(
@@ -38,7 +47,10 @@ class FutureScreen extends StatelessWidget {
                       bold: true,
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        cubit.getCurrentWeather(city: 'cairo');
+                        print(cubit.currentWeather);
+                      },
                       icon: const Icon(Icons.menu , size: 30,),
                       color: Colors.black,
                     ),
@@ -149,5 +161,7 @@ class FutureScreen extends StatelessWidget {
         ),
       ),
     ));
+  },
+);
   }
 }
