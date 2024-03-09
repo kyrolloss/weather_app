@@ -46,7 +46,7 @@ class FutureScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: height * .425,
+                height: height * .3,
               ),
               SizedBox(
                 height: height * .125,

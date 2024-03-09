@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/cubits/app_cubit.dart';
 
 import 'Screens/Future Screen/Future Screen.dart';
 import 'Screens/Splash screen/Splash screen.dart';
@@ -13,9 +15,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home:  FutureScreen(),
+    return BlocProvider(
+      create: (context) => AppCubit(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: MainLayout(),
+      ),
     );
   }
 }

@@ -37,6 +37,7 @@ class _EasyInfiniteDateTimeLineExampleState
     return Column(
       children: [
         EasyInfiniteDateTimeLine(
+
           controller: _controller,
           firstDate: DateTime(2024),
           focusDate: _focusDate,
