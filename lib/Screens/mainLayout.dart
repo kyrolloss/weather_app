@@ -51,7 +51,7 @@ class _MainLayoutState extends State<MainLayout> {
               currentIndex: selectedTab,
               unselectedItemColor: Colors.white70,
               backgroundColor: cubit.backgroundColor,
-              outlineBorderColor:  selectedTab ==1?  Colors.black :Colors.white ,
+              outlineBorderColor:  selectedTab ==1?  Colors.black : selectedTab == 2?Colors.black:Colors.white ,
               onTap: (p0) {
                 setState(() {
                   selectedTab = p0;
@@ -65,36 +65,36 @@ class _MainLayoutState extends State<MainLayout> {
                   unselectedIcon: Icons.home_outlined,
                   selectedColor: selectedTab == 1
                       ? cubit.color1[selectedTab]
-                      : Colors.white,
+                      : selectedTab == 2?Colors.black:Colors.white,
                   unselectedColor: selectedTab == 1 ? cubit.color1[selectedTab]
-                      :Colors.white,
+                      :selectedTab == 2?Colors.black:Colors.white,
                 ),
                 CrystalNavigationBarItem(
                   icon: Icons.calendar_month_outlined,
                   unselectedIcon: Icons.calendar_month_sharp,
                   selectedColor: selectedTab == 1
                       ? cubit.color1[selectedTab]
-                      : Colors.white,
+                      : selectedTab == 2?Colors.black:Colors.white,
                   unselectedColor: selectedTab == 1 ? cubit.color1[selectedTab]
-                      :Colors.white,
+                      :selectedTab == 2?Colors.black:Colors.white,
                 ),
                 CrystalNavigationBarItem(
                   icon: Icons.sunny,
                   unselectedIcon: Icons.sunny_snowing,
                   selectedColor: selectedTab == 1
                       ? cubit.color1[selectedTab]
-                      : Colors.white,
+                      : selectedTab == 2?Colors.black: Colors.white,
                   unselectedColor: selectedTab == 1 ? cubit.color1[selectedTab]
-                      :Colors.white,
+                      :selectedTab == 2?Colors.black:Colors.white,
                 ),
                 CrystalNavigationBarItem(
                   icon: Icons.water,
                   unselectedIcon: Icons.water_sharp,
                   selectedColor: selectedTab == 1
                       ? cubit.color1[selectedTab]
-                      : Colors.white,
+                      :selectedTab == 2?Colors.black: Colors.white,
                   unselectedColor: selectedTab == 1 ? cubit.color1[selectedTab]
-                      :Colors.white,
+                      :selectedTab == 2?Colors.black:Colors.white,
                 )
               ],
             ),

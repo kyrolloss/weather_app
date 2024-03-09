@@ -200,13 +200,13 @@ class HomeScreen extends StatelessWidget {
                                   image: NetworkImage(
                                       'https://cdn-icons-png.flaticon.com/512/11166/11166805.png'))),
                           BuildText(
-                            text: ' Now',
+                            text: 'Now',
                             size: 22.5,
                             bold: true,
                             color: Colors.white,
                           ),
                           BuildText(
-                            text: ' 28',
+                            text: '28',
                             size: 22.5,
                             bold: true,
                             color: Colors.white,

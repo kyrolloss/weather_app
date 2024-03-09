@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/cubits/app_cubit.dart';
 
-import 'Screens/Future Screen/Future Screen.dart';
-import 'Screens/Splash screen/Splash screen.dart';
 import 'Screens/mainLayout.dart';
 
 void main() {
