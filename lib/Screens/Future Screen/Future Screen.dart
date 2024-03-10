@@ -1,3 +1,4 @@
+import 'package:cr_calendar/cr_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/components/Text.dart';
@@ -9,13 +10,18 @@ class FutureScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
+
+
 
     return BlocConsumer<AppCubit, AppState>(
   listener: (context, state) {
   },
   builder: (context, state) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
+
+
     var cubit = AppCubit.get(context);
     return Scaffold(
         body: Container(
@@ -46,8 +52,11 @@ class FutureScreen extends StatelessWidget {
                       bold: true,
                     ),
                     IconButton(
-                      onPressed: () async{
-                        cubit.getForecastWeather(city: 'cairo');
+                      onPressed: () {
+                        cubit.showDatePicker(
+                          context
+                        );
+
 
                       },
                       icon: const Icon(Icons.menu , size: 30,),

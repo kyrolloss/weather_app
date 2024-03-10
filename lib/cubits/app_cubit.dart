@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:cr_calendar/cr_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -17,7 +18,31 @@ class AppCubit extends Cubit<AppState> {
   late Map? forecastWeather;
 
   String country='';
+  String date=DateTime.now().toString();
 
+
+  void showDatePicker(BuildContext context) {
+    showCrDatePicker(
+
+      context,
+      properties: DatePickerProperties(
+
+        firstWeekDay: WeekDay.saturday,
+
+        okButtonBuilder: (onPress) =>
+            ElevatedButton(child: const Text('OK'), onPressed: (){
+
+            }),
+        cancelButtonBuilder: (onPress) =>
+            OutlinedButton(child: const Text('CANCEL'), onPressed: (){}),
+        initialPickerDate: DateTime.now(),
+        onDateRangeSelected: (DateTime? rangeBegin, DateTime? rangeEnd) {
+
+
+        },
+      ),
+    );
+  }
   Future<void> getCurrentWeather({
     required String city,
   }) async {
