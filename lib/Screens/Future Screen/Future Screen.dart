@@ -46,9 +46,9 @@ class FutureScreen extends StatelessWidget {
                       bold: true,
                     ),
                     IconButton(
-                      onPressed: () {
-                        cubit.getCurrentWeather(city: 'cairo');
-                        print(cubit.currentWeather);
+                      onPressed: () async{
+                        cubit.getForecastWeather(city: 'cairo');
+
                       },
                       icon: const Icon(Icons.menu , size: 30,),
                       color: Colors.black,

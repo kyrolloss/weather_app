@@ -1,6 +1,10 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/components/Text.dart';
+import 'package:intl/intl.dart';
 
 import '../../cubits/app_cubit.dart';
 
@@ -23,6 +27,7 @@ class HomeScreen extends StatelessWidget {
         //     child: CircularProgressIndicator(),
         //   );
         // }
+
         return Scaffold(
           backgroundColor: const Color(0xff090122),
           body: SingleChildScrollView(
@@ -34,14 +39,14 @@ class HomeScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        height: height * .07,
-                        width: width * .9,
+                      Expanded(
                         child: Center(
                           child: TextFormField(
                             controller: controller,
+
                             cursorColor: Colors.black,
                             decoration: InputDecoration(
+
                                 fillColor: Colors.grey,
                                 filled: true,
                                 hintText: 'Search For Country ...',
@@ -50,14 +55,9 @@ class HomeScreen extends StatelessWidget {
                                     fontSize: 17.5),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(30),
+                                    gapPadding: 20,
                                     borderSide: BorderSide.none),
-                                prefixIcon: const Padding(
-                                  padding: EdgeInsets.all(15.0),
-                                  child: Icon(
-                                    Icons.search,
-                                    size: 30,
-                                  ),
-                                ),
+
                                 counterStyle: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 25,
@@ -65,6 +65,10 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+                      IconButton(onPressed: () async{
+                        cubit.getCurrentWeather(controller: controller,city: controller.text);
+                        cubit.getForecastWeather(city: controller.text);
+                      }, icon: const Icon(Icons.search),color: Colors.white,)
                     ],
                   ),
                 ),
@@ -200,12 +204,16 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: height * .2,
+                  height: height * .25,
                   width: width * .9,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: 10,
+                    itemCount: 24,
                     itemBuilder: (context, index) {
+                      String variable = cubit.forecastWeather!['forecast']['forecastday'][0]['hour'][index]['time'];
+                      DateTime dateTime = DateTime.parse(variable);
+                      String time = DateFormat.jm().format(dateTime);
+
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
@@ -218,23 +226,36 @@ class HomeScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
-                                  height: height * .1,
-                                  child: const Image(
-                                      fit: BoxFit.contain,
-                                      image: NetworkImage(
-                                          'https://cdn-icons-png.flaticon.com/512/11166/11166805.png'))),
+                                  height: height * .085,
+                                  child:  cubit.forecastWeather == null
+                                      ? const CircularProgressIndicator()
+                                      : Image.network(
+                                    'https:${cubit.forecastWeather!['current']
+                                    ['condition']['icon']}',
+                                    fit: BoxFit.cover,
+
+
+
+                                  )),
+                              SizedBox(
+                                height: height*.06,
+                                width: width*.3,
+                                child: Center(
+                                  child: BuildText(
+                                    text: time,
+                                    size: 20,
+                                    bold: true,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
                               BuildText(
-                                text: 'Now',
+                                text: cubit.forecastWeather!['forecast']['forecastday'][0]['hour'][index]['temp_c'].toString(),
                                 size: 22.5,
                                 bold: true,
                                 color: Colors.white,
                               ),
-                              BuildText(
-                                text: '28',
-                                size: 22.5,
-                                bold: true,
-                                color: Colors.white,
-                              ),
+
                             ],
                           ),
                         ),

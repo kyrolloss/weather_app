@@ -12,6 +12,82 @@ class AppCubit extends Cubit<AppState> {
   AppCubit() : super(AppInitial());
 
   static AppCubit get(context) => BlocProvider.of(context);
+
+
+  late final Map<String, dynamic>? currentWeather;
+  late Map? forecastWeather ;
+
+
+  Future<void> getCurrentWeather(
+      {
+        TextEditingController? controller,
+
+    required String city,
+  }) async {
+    // if(
+    // currentWeather != null
+    // )
+    // {
+    //   currentWeather!.clear();
+    //   emit(RemoveCurrentWeatherSuccess());
+    //
+    // }
+    emit(GetCurrentWeatherLoading());
+
+   await DioHelper.getWeather(
+        endPoint: EndPoint.currentWeather,
+        queryParameters: {
+          'q': city,
+          'Current weather': EndPoint.currentWeather,
+        }).then((value) {
+      emit(GetCurrentWeatherSuccess());
+      currentWeather = value.data;
+      controller!.clear();
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(GetCurrentWeatherFailed());
+    });
+  }
+
+
+  Future<void> getForecastWeather({
+    required String city,
+  }) async {
+    // if(
+    // forecastWeather != null
+    // )
+    // {
+    //   currentWeather!.clear();
+    //   emit(RemoveForecastWeatherSuccess());
+    //
+    // }
+
+    emit(ForecastWeatherLoading());
+
+     await DioHelper.getWeather(
+        endPoint: EndPoint.forecastWeather,
+        queryParameters: {
+          'q': city,
+          'Current weather': EndPoint.forecastWeather,
+          'days':1
+        }).then((value) {
+      emit(ForecastWeatherSuccess());
+      forecastWeather = value.data;
+      print(forecastWeather);
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(ForecastWeatherFailed());
+    });
+  }
+
+
+
+
+
+
+
+
+
   Color backgroundColor = const Color(0xff090122);
   List<Color> color = [
     const Color(0xff090122),
@@ -26,44 +102,4 @@ class AppCubit extends Cubit<AppState> {
     Colors.black,
   ];
 
-  late final Map<String, dynamic>? currentWeather;
-
-  Future<void> getCurrentWeather({
-    required String city,
-  }) async {
-    emit(GetCurrentWeatherLoading());
-
-    final response = await DioHelper.getWeather(
-        endPoint: EndPoint.currentWeather,
-        queryParameters: {
-          'q': city,
-          'Current weather': EndPoint.currentWeather,
-        }).then((value) {
-      emit(GetCurrentWeatherSuccess());
-      currentWeather = value.data;
-    }).catchError((onError) {
-      print(onError.toString());
-      emit(GetCurrentWeatherFailed());
-    });
-  }
-
-
-  Future<void> getForcastWeather({
-    required String city,
-  }) async {
-    emit(GetCurrentWeatherLoading());
-
-    final response = await DioHelper.getWeather(
-        endPoint: EndPoint.currentWeather,
-        queryParameters: {
-          'q': city,
-          'Current weather': EndPoint.currentWeather,
-        }).then((value) {
-      emit(GetCurrentWeatherSuccess());
-      currentWeather = value.data;
-    }).catchError((onError) {
-      print(onError.toString());
-      emit(GetCurrentWeatherFailed());
-    });
-  }
 }
