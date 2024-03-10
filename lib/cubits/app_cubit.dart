@@ -46,4 +46,24 @@ class AppCubit extends Cubit<AppState> {
       emit(GetCurrentWeatherFailed());
     });
   }
+
+
+  Future<void> getForcastWeather({
+    required String city,
+  }) async {
+    emit(GetCurrentWeatherLoading());
+
+    final response = await DioHelper.getWeather(
+        endPoint: EndPoint.currentWeather,
+        queryParameters: {
+          'q': city,
+          'Current weather': EndPoint.currentWeather,
+        }).then((value) {
+      emit(GetCurrentWeatherSuccess());
+      currentWeather = value.data;
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(GetCurrentWeatherFailed());
+    });
+  }
 }
