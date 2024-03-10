@@ -21,12 +21,14 @@ class HomeScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
-        // if (state is GetCurrentWeatherLoading){
-        //
-        //   return const Center(
-        //     child: CircularProgressIndicator(),
-        //   );
-        // }
+        if (state is GetCurrentWeatherLoading ||
+            state is ForecastWeatherLoading) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Color(0xff090122),
+            ),
+          );
+        }
 
         return Scaffold(
           backgroundColor: const Color(0xff090122),
@@ -43,10 +45,8 @@ class HomeScreen extends StatelessWidget {
                         child: Center(
                           child: TextFormField(
                             controller: controller,
-
                             cursorColor: Colors.black,
                             decoration: InputDecoration(
-
                                 fillColor: Colors.grey,
                                 filled: true,
                                 hintText: 'Search For Country ...',
@@ -57,7 +57,6 @@ class HomeScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(30),
                                     gapPadding: 20,
                                     borderSide: BorderSide.none),
-
                                 counterStyle: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 25,
@@ -65,10 +64,16 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      IconButton(onPressed: () async{
-                        cubit.getCurrentWeather(controller: controller,city: controller.text);
-                        cubit.getForecastWeather(city: controller.text);
-                      }, icon: const Icon(Icons.search),color: Colors.white,)
+                      IconButton(
+                        onPressed: () async {
+                          cubit.getCurrentWeather(city: controller.text);
+                          cubit.getForecastWeather(city: controller.text);
+                          controller.clear();
+                          cubit.country = controller.text;
+                        },
+                        icon: const Icon(Icons.search),
+                        color: Colors.white,
+                      )
                     ],
                   ),
                 ),
@@ -95,19 +100,16 @@ class HomeScreen extends StatelessWidget {
                     child: cubit.currentWeather == null
                         ? const CircularProgressIndicator()
                         : Image.network(
-                        'https:${cubit.currentWeather!['current']
-                            ['condition']['icon']}',
-                      fit: BoxFit.cover,
-
-
-
-                    )),
+                            'https:${cubit.currentWeather!['current']['condition']['icon']}',
+                            fit: BoxFit.cover,
+                          )),
                 SizedBox(
                   height: height * .1,
                   width: width * .5,
                   child: Center(
                     child: BuildText(
-                      text: cubit.currentWeather!["current"]['temp_c'].toString(),
+                      text:
+                          cubit.currentWeather!["current"]['temp_c'].toString(),
                       size: 40,
                       bold: true,
                       color: Colors.white,
@@ -122,8 +124,8 @@ class HomeScreen extends StatelessWidget {
                   width: width * .5,
                   child: Center(
                     child: BuildText(
-                      text: cubit.currentWeather!['current']
-                      ['condition']['text'],
+                      text: cubit.currentWeather!['current']['condition']
+                          ['text'],
                       size: 17.5,
                       bold: true,
                       color: Colors.white,
@@ -144,7 +146,8 @@ class HomeScreen extends StatelessWidget {
                           color: Colors.white,
                         ),
                         BuildText(
-                          text: ' ${cubit.currentWeather!["current"]['wind_kph'].toString()} KM / hr',
+                          text:
+                              ' ${cubit.currentWeather!["current"]['wind_kph'].toString()} KM / hr',
                           size: 15,
                           bold: true,
                           color: Colors.white,
@@ -159,7 +162,8 @@ class HomeScreen extends StatelessWidget {
                           color: Colors.white,
                         ),
                         BuildText(
-                          text: '${cubit.currentWeather!["current"]['humidity'].toString()} %',
+                          text:
+                              '${cubit.currentWeather!["current"]['humidity'].toString()} %',
                           size: 17.5,
                           bold: true,
                           color: Colors.white,
@@ -174,8 +178,8 @@ class HomeScreen extends StatelessWidget {
                           color: Colors.white,
                         ),
                         BuildText(
-                          text: ' ${cubit.currentWeather!["current"]['cloud'
-                          ].toString()}',
+                          text:
+                              ' ${cubit.currentWeather!["current"]['cloud'].toString()}',
                           size: 17.5,
                           bold: true,
                           color: Colors.white,
@@ -210,7 +214,8 @@ class HomeScreen extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: 24,
                     itemBuilder: (context, index) {
-                      String variable = cubit.forecastWeather!['forecast']['forecastday'][0]['hour'][index]['time'];
+                      String variable = cubit.forecastWeather!['forecast']
+                          ['forecastday'][0]['hour'][index]['time'];
                       DateTime dateTime = DateTime.parse(variable);
                       String time = DateFormat.jm().format(dateTime);
 
@@ -227,19 +232,15 @@ class HomeScreen extends StatelessWidget {
                             children: [
                               SizedBox(
                                   height: height * .085,
-                                  child:  cubit.forecastWeather == null
+                                  child: cubit.forecastWeather == null
                                       ? const CircularProgressIndicator()
                                       : Image.network(
-                                    'https:${cubit.forecastWeather!['current']
-                                    ['condition']['icon']}',
-                                    fit: BoxFit.cover,
-
-
-
-                                  )),
+                                          'https:${cubit.forecastWeather!['current']['condition']['icon']}',
+                                          fit: BoxFit.cover,
+                                        )),
                               SizedBox(
-                                height: height*.06,
-                                width: width*.3,
+                                height: height * .06,
+                                width: width * .3,
                                 child: Center(
                                   child: BuildText(
                                     text: time,
@@ -250,12 +251,14 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                               BuildText(
-                                text: cubit.forecastWeather!['forecast']['forecastday'][0]['hour'][index]['temp_c'].toString(),
+                                text: cubit.forecastWeather!['forecast']
+                                        ['forecastday'][0]['hour'][index]
+                                        ['temp_c']
+                                    .toString(),
                                 size: 22.5,
                                 bold: true,
                                 color: Colors.white,
                               ),
-
                             ],
                           ),
                         ),

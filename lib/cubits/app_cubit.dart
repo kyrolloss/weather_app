@@ -13,15 +13,12 @@ class AppCubit extends Cubit<AppState> {
 
   static AppCubit get(context) => BlocProvider.of(context);
 
+  late  Map? currentWeather;
+  late Map? forecastWeather;
 
-  late final Map<String, dynamic>? currentWeather;
-  late Map? forecastWeather ;
+  String country='';
 
-
-  Future<void> getCurrentWeather(
-      {
-        TextEditingController? controller,
-
+  Future<void> getCurrentWeather({
     required String city,
   }) async {
     // if(
@@ -33,8 +30,7 @@ class AppCubit extends Cubit<AppState> {
     //
     // }
     emit(GetCurrentWeatherLoading());
-
-   await DioHelper.getWeather(
+    await DioHelper.getWeather(
         endPoint: EndPoint.currentWeather,
         queryParameters: {
           'q': city,
@@ -42,13 +38,11 @@ class AppCubit extends Cubit<AppState> {
         }).then((value) {
       emit(GetCurrentWeatherSuccess());
       currentWeather = value.data;
-      controller!.clear();
     }).catchError((onError) {
       print(onError.toString());
       emit(GetCurrentWeatherFailed());
     });
   }
-
 
   Future<void> getForecastWeather({
     required String city,
@@ -64,12 +58,12 @@ class AppCubit extends Cubit<AppState> {
 
     emit(ForecastWeatherLoading());
 
-     await DioHelper.getWeather(
+    await DioHelper.getWeather(
         endPoint: EndPoint.forecastWeather,
         queryParameters: {
           'q': city,
           'Current weather': EndPoint.forecastWeather,
-          'days':1
+          'days': 1
         }).then((value) {
       emit(ForecastWeatherSuccess());
       forecastWeather = value.data;
@@ -79,14 +73,6 @@ class AppCubit extends Cubit<AppState> {
       emit(ForecastWeatherFailed());
     });
   }
-
-
-
-
-
-
-
-
 
   Color backgroundColor = const Color(0xff090122);
   List<Color> color = [
@@ -101,5 +87,4 @@ class AppCubit extends Cubit<AppState> {
     Colors.black,
     Colors.black,
   ];
-
 }
