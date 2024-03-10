@@ -10,6 +10,7 @@ class DioHelper {
   static init() {
     dio = Dio(BaseOptions(
       baseUrl: EndPoint.baseUrl,
+
       headers: {
         'Content-Type': 'application/json',
         'key': '2c5bd23c241b46dca75103044240903'

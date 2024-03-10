@@ -9,7 +9,6 @@ import '../Helpers/Dio Helper/Dio Helper.dart';
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
-
   AppCubit() : super(AppInitial());
 
   static AppCubit get(context) => BlocProvider.of(context);
@@ -27,22 +26,24 @@ class AppCubit extends Cubit<AppState> {
     Colors.black,
   ];
 
-  late Map<String, dynamic> currentWeather= {};
+  late final Map<String, dynamic>? currentWeather;
 
   Future<void> getCurrentWeather({
     required String city,
   }) async {
     emit(GetCurrentWeatherLoading());
 
-    final response =await DioHelper.getWeather(
+    final response = await DioHelper.getWeather(
         endPoint: EndPoint.currentWeather,
-      queryParameters: {
-          'q':city,
-        'Current weather':EndPoint.currentWeather,
-
-      }
-    );
-    currentWeather = response.data;
-
+        queryParameters: {
+          'q': city,
+          'Current weather': EndPoint.currentWeather,
+        }).then((value) {
+      emit(GetCurrentWeatherSuccess());
+      currentWeather = value.data;
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(GetCurrentWeatherFailed());
+    });
   }
 }

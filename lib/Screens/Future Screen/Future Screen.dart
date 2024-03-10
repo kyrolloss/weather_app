@@ -14,7 +14,6 @@ class FutureScreen extends StatelessWidget {
 
     return BlocConsumer<AppCubit, AppState>(
   listener: (context, state) {
-    // TODO: implement listener
   },
   builder: (context, state) {
     var cubit = AppCubit.get(context);
