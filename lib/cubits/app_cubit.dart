@@ -9,20 +9,16 @@ import '../Helpers/Dio Helper/Dio Helper.dart';
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
-
   AppCubit() : super(AppInitial());
 
   static AppCubit get(context) => BlocProvider.of(context);
 
-  late  Map? currentWeather;
-  late Map? forecastWeather;
-  late Map? futureWeather;
-  String country='';
-  String date=DateTime.now().toString();
-
-
-
-
+   Map? currentWeather;
+   Map? forecastWeather;
+   Map? futureWeather;
+   late Map? astronomyWeather;
+  String country = 'cairo';
+  String date = DateTime.now().toString();
 
   Future<void> getCurrentWeather({
     required String city,
@@ -84,22 +80,42 @@ class AppCubit extends Cubit<AppState> {
     required String city,
     required String date,
   }) async {
-
-
     emit(FutureWeatherLoading());
+    print(date);
 
     await DioHelper.getWeather(
         endPoint: EndPoint.futureWeather,
         queryParameters: {
           'q': city,
-          'Current weather': EndPoint.futureWeather,
-          'dt' : date
+          'Future': EndPoint.futureWeather,
+          'dt': date
         }).then((value) {
       emit(FutureWeatherSuccess());
       futureWeather = value.data;
     }).catchError((onError) {
       print(onError.toString());
       emit(FutureWeatherFailed());
+    });
+  }
+
+  Future<void> getAstronomyWeather({
+    required String city,
+    required String date,
+  }) async {
+    emit(AstronomyWeatherLoading());
+
+    await DioHelper.getWeather(
+        endPoint: EndPoint.astronomyWeather,
+        queryParameters: {
+          'q': city,
+          'Astronomy': EndPoint.astronomyWeather,
+          'dt': date
+        }).then((value) {
+      emit(AstronomyWeatherSuccess());
+      astronomyWeather = value.data;
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(AstronomyWeatherFailed());
     });
   }
 

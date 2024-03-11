@@ -23,3 +23,7 @@ class FutureWeatherSuccess extends AppState {}
 class RemoveFutureWeatherSuccess extends AppState {}
 class FutureWeatherLoading extends AppState {}
 class FutureWeatherFailed extends AppState {}
+
+class AstronomyWeatherSuccess extends AppState {}
+class AstronomyWeatherLoading extends AppState {}
+class AstronomyWeatherFailed extends AppState {}

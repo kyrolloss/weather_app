@@ -7,4 +7,7 @@ class EndPoint{
   static String forecastWeather ='/forecast.json';
 
   static String futureWeather ='/future.json';
+
+  static String astronomyWeather ='/astronomy.json';
+
 }

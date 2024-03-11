@@ -21,8 +21,8 @@ class HomeScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AppCubit.get(context);
-        if (state is GetCurrentWeatherLoading ||
-            state is ForecastWeatherLoading) {
+        if (state is GetCurrentWeatherLoading &&
+            state is ForecastWeatherLoading && cubit.currentWeather == null && cubit.forecastWeather == null ) {
           return const Center(
             child: CircularProgressIndicator(
               color: Color(0xff090122),
@@ -77,6 +77,7 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                SizedBox(height: height*.03,),
                 SizedBox(
                   height: height * .1,
                   width: width * .5,
@@ -85,15 +86,13 @@ class HomeScreen extends StatelessWidget {
                         ? const CircularProgressIndicator()
                         : BuildText(
                             text: cubit.currentWeather!["location"]['name'],
-                            size: 25,
+                            size: 35,
                             bold: true,
                             color: Colors.white,
                           ),
                   ),
                 ),
-                SizedBox(
-                  height: height * .02,
-                ),
+
                 SizedBox(
                     height: height * .2,
                     width: width * .4,

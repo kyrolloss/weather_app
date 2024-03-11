@@ -21,7 +21,10 @@ class _FutureScreenState extends State<FutureScreen> {
         var height = MediaQuery.of(context).size.height;
         var width = MediaQuery.of(context).size.width;
 
-        DateTime? _selectedDate;
+        DateTime? _selectedDate = DateTime.tryParse('yyyy-MM-dd');
+        int? year;
+        int? month;
+        int? day;
 
         Future<void> _showCalendar(BuildContext context) async {
           final DateTime? picked = await showDatePicker(
@@ -33,14 +36,15 @@ class _FutureScreenState extends State<FutureScreen> {
           if (picked != null && picked != _selectedDate) {
             setState(() {
               _selectedDate = picked;
-              print(_selectedDate);
+              year = _selectedDate!.year;
+              month = _selectedDate!.month;
+              day = _selectedDate!.day;
             });
           }
         }
 
-
         var cubit = AppCubit.get(context);
-        if (state is FutureWeatherLoading) {
+        if (state is FutureWeatherLoading && cubit.futureWeather == null) {
           return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
@@ -50,12 +54,31 @@ class _FutureScreenState extends State<FutureScreen> {
 
         return Scaffold(
             body: Container(
-          decoration: BoxDecoration(
-              gradient: RadialGradient(colors: [
-            Colors.deepOrange.withOpacity(.7),
-            Colors.deepOrange.withOpacity(.875),
-            Colors.white
-          ], center: Alignment.topRight, radius: 1.5)),
+          decoration: cubit.futureWeather!['forecast']['forecastday'][0]["day"]
+                      ['avgtemp_c'] >
+                  26.5
+              ? BoxDecoration(
+                  gradient: RadialGradient(colors: [
+                  Colors.deepOrange.withOpacity(.7),
+                  Colors.deepOrange.withOpacity(.875),
+                  Colors.white
+                ], center: Alignment.topRight, radius: 1.5))
+              : cubit.futureWeather!['forecast']['forecastday'][0]["day"]
+                          ['avgtemp_c'] <
+                      19
+                  ? BoxDecoration(
+                      gradient: RadialGradient(colors: [
+                      Colors.blue.withOpacity(.7),
+                      Colors.blue.withOpacity(.875),
+                      Colors.blueAccent.withOpacity(.875),
+                      Colors.white
+                    ], center: Alignment.topRight, radius: 1.5))
+                  : BoxDecoration(
+                      gradient: RadialGradient(colors: [
+                      Colors.lightGreenAccent.withOpacity(.875),
+                      Colors.lightGreenAccent.withOpacity(.875),
+                      Colors.white
+                    ], center: Alignment.topRight, radius: 1.5)),
           child: Padding(
             padding: const EdgeInsets.all(17.5),
             child: SingleChildScrollView(
@@ -76,17 +99,43 @@ class _FutureScreenState extends State<FutureScreen> {
                         ),
                         IconButton(
                           onPressed: () async {
-                            _showCalendar(context);
+                            await _showCalendar(context);
 
+                            if (_selectedDate != null) {
+                              String month2;
+                              String day2;
+                              month! < 10
+                                  ? month2 = '0$month'
+                                  : month2 = month.toString();
+                              day! < 10
+                                  ? day2 = '0$day'
+                                  : day2 = day.toString();
+
+                              String date = '${year.toString()}-$month2-$day2';
+                              await cubit.getFutureWeather(
+                                  city: cubit.country, date: date);
+                            }
                           },
                           icon: const Icon(
-                            Icons.calendar_today, // Use a more appropriate calendar icon
+                            Icons.calendar_today,
+                            // Use a more appropriate calendar icon
                             size: 30,
                           ),
                           color: Colors.black,
                         ),
                       ],
                     ),
+                  ),
+                  SizedBox(
+                    height: height * .02,
+                  ),
+                  BuildText(
+                    text:
+                        'Date should be between 14 days and 300 days from today in the future.',
+                    size: 17.5,
+                    color: Colors.black,
+                    bold: true,
+                    maxLines: 3,
                   ),
                   SizedBox(
                     height: height * .3,
