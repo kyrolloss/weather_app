@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:cr_calendar/cr_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -10,39 +9,21 @@ import '../Helpers/Dio Helper/Dio Helper.dart';
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
+
   AppCubit() : super(AppInitial());
 
   static AppCubit get(context) => BlocProvider.of(context);
 
   late  Map? currentWeather;
   late Map? forecastWeather;
-
+  late Map? futureWeather;
   String country='';
   String date=DateTime.now().toString();
 
 
-  void showDatePicker(BuildContext context) {
-    showCrDatePicker(
-
-      context,
-      properties: DatePickerProperties(
-
-        firstWeekDay: WeekDay.saturday,
-
-        okButtonBuilder: (onPress) =>
-            ElevatedButton(child: const Text('OK'), onPressed: (){
-
-            }),
-        cancelButtonBuilder: (onPress) =>
-            OutlinedButton(child: const Text('CANCEL'), onPressed: (){}),
-        initialPickerDate: DateTime.now(),
-        onDateRangeSelected: (DateTime? rangeBegin, DateTime? rangeEnd) {
 
 
-        },
-      ),
-    );
-  }
+
   Future<void> getCurrentWeather({
     required String city,
   }) async {
@@ -96,6 +77,29 @@ class AppCubit extends Cubit<AppState> {
     }).catchError((onError) {
       print(onError.toString());
       emit(ForecastWeatherFailed());
+    });
+  }
+
+  Future<void> getFutureWeather({
+    required String city,
+    required String date,
+  }) async {
+
+
+    emit(FutureWeatherLoading());
+
+    await DioHelper.getWeather(
+        endPoint: EndPoint.futureWeather,
+        queryParameters: {
+          'q': city,
+          'Current weather': EndPoint.futureWeather,
+          'dt' : date
+        }).then((value) {
+      emit(FutureWeatherSuccess());
+      futureWeather = value.data;
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(FutureWeatherFailed());
     });
   }
 

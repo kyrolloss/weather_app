@@ -6,6 +6,8 @@ import 'package:weather_app/Screens/Future%20Screen/Future%20Screen.dart';
 import 'package:weather_app/Screens/Home%20Screen/Home%20Screen.dart';
 import 'package:weather_app/cubits/app_cubit.dart';
 
+import '../cubits/app_cubit.dart';
+import '../cubits/app_cubit.dart';
 import 'marine Screen/marine Screen.dart';
 
 class MainLayout extends StatefulWidget {
@@ -58,6 +60,9 @@ class _MainLayoutState extends State<MainLayout> {
                   widget._widget = widget.widgets[p0];
                   cubit.backgroundColor = cubit.color[p0];
                 });
+
+                if(p0 == 1){
+                }
               },
               items: [
                 CrystalNavigationBarItem(
@@ -79,6 +84,7 @@ class _MainLayoutState extends State<MainLayout> {
                       :selectedTab == 2?Colors.black:Colors.white,
                 ),
                 CrystalNavigationBarItem(
+
                   icon: Icons.sunny,
                   unselectedIcon: Icons.sunny_snowing,
                   selectedColor: selectedTab == 1

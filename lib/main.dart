@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppCubit()..getCurrentWeather(city: 'cairo')..getForecastWeather(city: 'cairo'),
+      create: (context) => AppCubit()..getCurrentWeather(city: 'cairo')..getForecastWeather(city: 'cairo')..getFutureWeather(city: 'cairo', date: '2024-04-10')
+      ,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: MainLayout(),
