@@ -73,18 +73,37 @@ class _AstronomyScreenState extends State<AstronomyScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(
+                      SizedBox(
+                        height: height*.065,
+                        width: width*.9,
                         child: Center(
                           child: TextFormField(
+
                             controller: controller,
                             cursorColor: Colors.black,
                             decoration: InputDecoration(
+                                contentPadding: EdgeInsets.all(10),
                                 suffixIcon: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12.0),
                                   child: IconButton(
                                     onPressed: () async{
                                       await _showCalendar(context);
+                                      if (_selectedDate != null) {
+                                        String month2;
+                                        String day2;
+                                        month! < 10
+                                            ? month2 = '0$month'
+                                            : month2 = month.toString();
+                                        day! < 10
+                                            ? day2 = '0$day'
+                                            : day2 = day.toString();
+
+                                        String date = '${year.toString()}-$month2-$day2';
+                                        cubit.country = controller.text;
+                                        await cubit.getAstronomyWeather(
+                                            city: cubit.country, date: date);
+                                      }
 
                                     },
                                     icon: const Icon(Icons.calendar_today),
@@ -109,39 +128,7 @@ class _AstronomyScreenState extends State<AstronomyScreen> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          onTap: () async {
 
-                            if (_selectedDate != null) {
-                              String month2;
-                              String day2;
-                              month! < 10
-                                  ? month2 = '0$month'
-                                  : month2 = month.toString();
-                              day! < 10
-                                  ? day2 = '0$day'
-                                  : day2 = day.toString();
-
-                              String date = '${year.toString()}-$month2-$day2';
-                              await cubit.getAstronomyWeather(
-                                  city: cubit.country, date: date);
-                            }
-                          },
-                          child: Container(
-                            height: height * .07,
-                            width: width * .15,
-                            decoration: BoxDecoration(
-                                color: const Color(0xff090122),
-                                borderRadius: BorderRadius.circular(25)),
-                            child: const Icon(
-                              Icons.send,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      )
                     ],
                   ),
                 ),

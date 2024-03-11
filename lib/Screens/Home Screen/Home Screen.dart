@@ -41,27 +41,28 @@ class HomeScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(
-                        child: Center(
-                          child: TextFormField(
-                            controller: controller,
-                            cursorColor: Colors.black,
-                            decoration: InputDecoration(
-                                fillColor: Colors.grey,
-                                filled: true,
-                                hintText: 'Search For Country ...',
-                                hintStyle: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17.5),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                    gapPadding: 20,
-                                    borderSide: BorderSide.none),
-                                counterStyle: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold)),
-                          ),
+                      SizedBox(
+                        height: height*.065,
+                        width: width*.8,
+                        child: TextFormField(
+                          controller: controller,
+                          cursorColor: Colors.black,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(10),
+                              fillColor: Colors.grey,
+                              filled: true,
+                              hintText: 'Search For Country ...',
+                              hintStyle: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17.5),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  gapPadding: 20,
+                                  borderSide: BorderSide.none),
+                              counterStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold)),
                         ),
                       ),
                       IconButton(

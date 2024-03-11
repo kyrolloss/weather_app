@@ -19,6 +19,8 @@ class AppCubit extends Cubit<AppState> {
    late Map? astronomyWeather;
   String country = 'cairo';
   String date = DateTime.now().toString();
+  String AstronomyCity ='';
+  String AstronomyDate = '';
 
   Future<void> getCurrentWeather({
     required String city,
