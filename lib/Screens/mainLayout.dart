@@ -6,8 +6,6 @@ import 'package:weather_app/Screens/Future%20Screen/Future%20Screen.dart';
 import 'package:weather_app/Screens/Home%20Screen/Home%20Screen.dart';
 import 'package:weather_app/cubits/app_cubit.dart';
 
-import '../cubits/app_cubit.dart';
-import '../cubits/app_cubit.dart';
 import 'marine Screen/marine Screen.dart';
 
 class MainLayout extends StatefulWidget {
@@ -46,7 +44,9 @@ class _MainLayoutState extends State<MainLayout> {
         return Scaffold(
           body: widget._widget,
           backgroundColor: cubit.backgroundColor,
+
           bottomNavigationBar: Padding(
+
             padding: const EdgeInsets.only(bottom: 10),
             child: CrystalNavigationBar(
               itemPadding: const EdgeInsets.all(10),

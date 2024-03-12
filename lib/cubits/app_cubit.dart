@@ -13,26 +13,22 @@ class AppCubit extends Cubit<AppState> {
 
   static AppCubit get(context) => BlocProvider.of(context);
 
-   Map? currentWeather;
-   Map? forecastWeather;
-   Map? futureWeather;
-   late Map? astronomyWeather;
+  Map? currentWeather;
+
+  Map? forecastWeather;
+  Map? futureWeather;
+  late Map? astronomyWeather;
+  Map? marineWeather;
+
   String country = 'cairo';
   String date = DateTime.now().toString();
-  String AstronomyCity ='';
-  String AstronomyDate = '';
+
+
+
 
   Future<void> getCurrentWeather({
     required String city,
   }) async {
-    // if(
-    // currentWeather != null
-    // )
-    // {
-    //   currentWeather!.clear();
-    //   emit(RemoveCurrentWeatherSuccess());
-    //
-    // }
     emit(GetCurrentWeatherLoading());
     await DioHelper.getWeather(
         endPoint: EndPoint.currentWeather,
@@ -51,15 +47,6 @@ class AppCubit extends Cubit<AppState> {
   Future<void> getForecastWeather({
     required String city,
   }) async {
-    // if(
-    // forecastWeather != null
-    // )
-    // {
-    //   currentWeather!.clear();
-    //   emit(RemoveForecastWeatherSuccess());
-    //
-    // }
-
     emit(ForecastWeatherLoading());
 
     await DioHelper.getWeather(
@@ -121,12 +108,33 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
+
+
+  Future<void> getMarineWeather({
+    required String city,
+  }) async {
+    emit(MarineWeatherLoading());
+
+    await DioHelper.getWeather(
+        endPoint: EndPoint.marineWeather,
+        queryParameters: {
+          'q': city,
+          'Marine': EndPoint.marineWeather,
+        }).then((value) {
+      emit(MarineWeatherSuccess());
+      marineWeather = value.data;
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(MarineWeatherFailed());
+    });
+  }
+
   Color backgroundColor = const Color(0xff090122);
   List<Color> color = [
     const Color(0xff090122),
     Colors.white,
     Colors.white,
-    const Color(0xff5b9aaf)
+    const Color(0xffA6763C)
   ];
   List<Color> color1 = [
     Colors.black,

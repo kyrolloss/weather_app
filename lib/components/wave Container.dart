@@ -7,12 +7,16 @@ class WavePainter extends CustomPainter {
   final double height;
   final double waveAmplitude;
   final double waveFrequency;
+  final double number;
+
+
 
   WavePainter({
     required this.color,
     required this.height,
     required this.waveAmplitude,
     required this.waveFrequency,
+    required this.number,
   });
 
   @override
@@ -24,7 +28,7 @@ class WavePainter extends CustomPainter {
     final path = Path();
 
     for (double x = 0; x < size.width; x += 10) {
-      final y = height /99 -
+      final y = height / number-
           waveAmplitude *
               sin(x / 9 * waveFrequency * pi / 180);
       if (x == 0) {

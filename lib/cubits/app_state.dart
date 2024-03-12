@@ -27,3 +27,7 @@ class FutureWeatherFailed extends AppState {}
 class AstronomyWeatherSuccess extends AppState {}
 class AstronomyWeatherLoading extends AppState {}
 class AstronomyWeatherFailed extends AppState {}
+
+class MarineWeatherSuccess extends AppState {}
+class MarineWeatherLoading extends AppState {}
+class MarineWeatherFailed extends AppState {}

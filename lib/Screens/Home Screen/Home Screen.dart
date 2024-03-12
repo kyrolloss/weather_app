@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/components/Text.dart';
@@ -22,7 +19,7 @@ class HomeScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = AppCubit.get(context);
         if (state is GetCurrentWeatherLoading &&
-            state is ForecastWeatherLoading && cubit.currentWeather == null && cubit.forecastWeather == null ) {
+            state is ForecastWeatherLoading || cubit.currentWeather == null || cubit.forecastWeather == null ) {
           return const Center(
             child: CircularProgressIndicator(
               color: Color(0xff090122),
@@ -48,7 +45,7 @@ class HomeScreen extends StatelessWidget {
                           controller: controller,
                           cursorColor: Colors.black,
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(10),
+                            contentPadding: const EdgeInsets.all(10),
                               fillColor: Colors.grey,
                               filled: true,
                               hintText: 'Search For Country ...',

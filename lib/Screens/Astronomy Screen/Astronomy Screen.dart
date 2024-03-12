@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../components/Text.dart';
 import '../../cubits/app_cubit.dart';
 
@@ -33,12 +30,12 @@ class _AstronomyScreenState extends State<AstronomyScreen> {
         // TODO: implement listener
       },
       builder: (context, state) {
-        DateTime? _selectedDate = DateTime.tryParse('yyyy-MM-dd');
+        DateTime? selectedDate = DateTime.tryParse('yyyy-MM-dd');
         int? year;
         int? month;
         int? day;
         var cubit = AppCubit.get(context);
-        Future<void> _showCalendar(BuildContext context) async {
+        Future<void> showCalendar(BuildContext context) async {
           final DateTime? picked = await showDatePicker(
             context: context,
             initialDate: DateTime.now(),
@@ -46,17 +43,18 @@ class _AstronomyScreenState extends State<AstronomyScreen> {
             lastDate: DateTime(2101),
           );
 
-          if (picked != null && picked != _selectedDate) {
+          if (picked != null && picked != selectedDate) {
             setState(() {
-              _selectedDate = picked;
-              year = _selectedDate!.year;
-              month = _selectedDate!.month;
-              day = _selectedDate!.day;
+              selectedDate = picked;
+              year = selectedDate!.year;
+              month = selectedDate!.month;
+              day = selectedDate!.day;
             });
           }
         }
 
-        if (state is AstronomyWeatherLoading && cubit.astronomyWeather == null) {
+        if (state is AstronomyWeatherLoading ||
+            cubit.astronomyWeather == null) {
           return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
@@ -74,22 +72,21 @@ class _AstronomyScreenState extends State<AstronomyScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: height*.065,
-                        width: width*.9,
+                        height: height * .065,
+                        width: width * .9,
                         child: Center(
                           child: TextFormField(
-
                             controller: controller,
                             cursorColor: Colors.black,
                             decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(10),
+                                contentPadding: const EdgeInsets.all(10),
                                 suffixIcon: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12.0),
                                   child: IconButton(
-                                    onPressed: () async{
-                                      await _showCalendar(context);
-                                      if (_selectedDate != null) {
+                                    onPressed: () async {
+                                      await showCalendar(context);
+                                      if (selectedDate != null) {
                                         String month2;
                                         String day2;
                                         month! < 10
@@ -99,12 +96,12 @@ class _AstronomyScreenState extends State<AstronomyScreen> {
                                             ? day2 = '0$day'
                                             : day2 = day.toString();
 
-                                        String date = '${year.toString()}-$month2-$day2';
+                                        String date =
+                                            '${year.toString()}-$month2-$day2';
                                         cubit.country = controller.text;
                                         await cubit.getAstronomyWeather(
                                             city: cubit.country, date: date);
                                       }
-
                                     },
                                     icon: const Icon(Icons.calendar_today),
                                     color: Colors.black,
@@ -128,11 +125,12 @@ class _AstronomyScreenState extends State<AstronomyScreen> {
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
-                SizedBox(height: height*.01,),
+                SizedBox(
+                  height: height * .01,
+                ),
                 BuildText(
                   text: cubit.astronomyWeather!["location"]['name'],
                   size: 35,
@@ -140,20 +138,23 @@ class _AstronomyScreenState extends State<AstronomyScreen> {
                   color: const Color(0xff090122),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0 , ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                  ),
                   child: SizedBox(
                     height: height * .65,
                     width: width,
                     child: GridView.builder(
-                      itemCount: 6,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 0,
-                              crossAxisSpacing: 1,
-                              childAspectRatio: .8),
+                        itemCount: 6,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 0,
+                                crossAxisSpacing: 1,
+                                childAspectRatio: .8),
                         itemBuilder: (context, index) {
-                          final astro = cubit.astronomyWeather!['astronomy']['astro'];
+                          final astro =
+                              cubit.astronomyWeather!['astronomy']['astro'];
                           final keys = astro.keys;
                           final values = astro.values;
 
@@ -164,7 +165,8 @@ class _AstronomyScreenState extends State<AstronomyScreen> {
                                   borderRadius: BorderRadius.circular(17.5),
                                   color: const Color(0xff090122)),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   SizedBox(
                                     height: height * .01,
@@ -184,7 +186,7 @@ class _AstronomyScreenState extends State<AstronomyScreen> {
                                     letterSpacing: .35,
                                   ),
                                   SizedBox(
-                                    width: width*.3,
+                                    width: width * .3,
                                     child: Center(
                                       child: BuildText(
                                         text: '${values.elementAt(index)}',
@@ -203,9 +205,7 @@ class _AstronomyScreenState extends State<AstronomyScreen> {
                               ),
                             ),
                           );
-                        }
-
-                    ),
+                        }),
                   ),
                 ),
               ],

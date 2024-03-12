@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:weather_app/components/Text.dart';
 import '../../cubits/app_cubit.dart';
 import 'package:intl/intl.dart';
@@ -21,30 +20,30 @@ class _FutureScreenState extends State<FutureScreen> {
         var height = MediaQuery.of(context).size.height;
         var width = MediaQuery.of(context).size.width;
 
-        DateTime? _selectedDate = DateTime.tryParse('yyyy-MM-dd');
+        DateTime? selectedDate = DateTime.tryParse('yyyy-MM-dd');
         int? year;
         int? month;
         int? day;
 
-        Future<void> _showCalendar(BuildContext context) async {
+        Future<void> showCalendar(BuildContext context) async {
           final DateTime? picked = await showDatePicker(
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime(2000),
             lastDate: DateTime(2101),
           );
-          if (picked != null && picked != _selectedDate) {
+          if (picked != null && picked != selectedDate) {
             setState(() {
-              _selectedDate = picked;
-              year = _selectedDate!.year;
-              month = _selectedDate!.month;
-              day = _selectedDate!.day;
+              selectedDate = picked;
+              year = selectedDate!.year;
+              month = selectedDate!.month;
+              day = selectedDate!.day;
             });
           }
         }
 
         var cubit = AppCubit.get(context);
-        if (state is FutureWeatherLoading && cubit.futureWeather == null) {
+        if (state is FutureWeatherLoading || cubit.futureWeather == null) {
           return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
@@ -99,9 +98,9 @@ class _FutureScreenState extends State<FutureScreen> {
                         ),
                         IconButton(
                           onPressed: () async {
-                            await _showCalendar(context);
+                            await showCalendar(context);
 
-                            if (_selectedDate != null) {
+                            if (selectedDate != null) {
                               String month2;
                               String day2;
                               month! < 10
